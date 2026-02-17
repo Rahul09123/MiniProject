@@ -25,7 +25,7 @@ pipeline {
             passwordVariable: 'DOCKER_PASS'
         )]) {
             script {
-                sh '/usr/local/bin/docker login -u $DOCKER_USER -p $DOCKER_PASS'
+                sh 'echo $DOCKER_PASS | /usr/local/bin/docker login -u $DOCKER_USER --password-stdin'
                 sh '/usr/local/bin/docker tag calculator $DOCKER_USER/calculator:latest'
                 sh '/usr/local/bin/docker push $DOCKER_USER/calculator:latest'
             }
@@ -43,6 +43,7 @@ pipeline {
 
     }
 }
+
 
 
 
