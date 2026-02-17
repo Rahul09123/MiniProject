@@ -1,54 +1,38 @@
 pipeline {
     agent any
-    triggers { 
-      githubPush() 
-   }
-    environment {
-        DOCKER_IMAGE_NAME = 'calculator'
-        GITHUB_REPO_URL = 'https://github.com/BThangaraju/MiniProject.git'
-    }
 
     stages {
+
         stage('Checkout') {
             steps {
-                script {
-                    // Checkout the code from the GitHub repository
-                    git branch: 'main', url: "${GITHUB_REPO_URL}"
-                }
+                git branch: 'main', url: 'https://github.com/BThangaraju/MiniProject.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build Docker image
-                    docker.build("${DOCKER_IMAGE_NAME}", '.')
+                    sh '/opt/homebrew/bin/docker build -t calculator .'
                 }
             }
         }
 
-        stage('Push Docker Images') {
+        stage('Push Docker Image') {
             steps {
-                script{
-                    docker.withRegistry('', 'DockerHubCred') {
-                    sh 'docker tag calculator iiitb/calculator:latest'
-                    sh 'docker push iiitb/calculator'
-                    }
-                 }
+                script {
+                    sh '/opt/homebrew/bin/docker tag calculator rahulraman/calculator:latest'
+                    sh '/opt/homebrew/bin/docker push rahulraman/calculator:latest'
+                }
             }
         }
 
-   stage('Run Ansible Playbook') {
+        stage('Run Ansible') {
             steps {
                 script {
-                    ansiblePlaybook(
-                        playbook: 'deploy.yml',
-                        inventory: 'inventory'
-                     )
+                    sh 'ansible-playbook deploy.yml'
                 }
             }
         }
 
     }
 }
-
