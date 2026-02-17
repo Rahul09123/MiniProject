@@ -5,7 +5,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/BThangaraju/MiniProject.git'
+                git branch: 'main', url: 'https://github.com/Rahul09123/MiniProject.git'
             }
         }
 
@@ -36,3 +36,4 @@ pipeline {
 
     }
 }
+
