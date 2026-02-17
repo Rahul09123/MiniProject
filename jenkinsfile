@@ -36,13 +36,14 @@ pipeline {
         stage('Run Ansible') {
             steps {
                 script {
-                    sh 'ansible-playbook deploy.yml'
+                    sh '/opt/homebrew/bin/ansible-playbook deploy.yml'
                 }
             }
         }
 
     }
 }
+
 
 
 
