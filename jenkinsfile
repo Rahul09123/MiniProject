@@ -18,14 +18,20 @@ pipeline {
         }
 
         stage('Push Docker Image') {
-        steps {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub-creds',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
             script {
-                sh '/usr/local/bin/docker login -u rahulraman -p $DOCKER_PASS'
-                sh '/usr/local/bin/docker tag calculator rahulraman/calculator:latest'
-                sh '/usr/local/bin/docker push rahulraman/calculator:latest'
+                sh '/usr/local/bin/docker login -u $DOCKER_USER -p $DOCKER_PASS'
+                sh '/usr/local/bin/docker tag calculator $DOCKER_USER/calculator:latest'
+                sh '/usr/local/bin/docker push $DOCKER_USER/calculator:latest'
             }
         }
     }
+}
 
         stage('Run Ansible') {
             steps {
@@ -37,6 +43,7 @@ pipeline {
 
     }
 }
+
 
 
 
