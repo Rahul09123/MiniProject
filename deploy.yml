@@ -1,23 +1,27 @@
 ---
 - name: Pull Docker Image from Docker Hub
   hosts: localhost
-  remote_user: rahul
-  become: false
+  connection: local
+  gather_facts: false
+
   tasks:
+
     - name: Pull Docker Image
       docker_image:
-        name: "iiitb/calculator"
+        name: rahul0129/calculator
+        tag: latest
         source: pull
       register: docker_pull_result
 
     - name: Display Docker Pull Result
       debug:
         var: docker_pull_result
-        
-    - name: Start Docker service
-      service:
-        name: docker
-        state: started
-    - name: Running container
-      shell: docker run -it -d --name calculator iiitb/calculator /bin/bash
 
+    - name: Run Docker Container
+      docker_container:
+        name: calculator-container
+        image: rahul0129/calculator:latest
+        state: started
+        recreate: yes
+        interactive: yes
+        tty: yes
