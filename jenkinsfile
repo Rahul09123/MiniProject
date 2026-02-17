@@ -12,7 +12,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh '/opt/homebrew/bin/docker build -t calculator .'
+                    sh '/usr/local/bin/docker build -t calculator .'
                 }
             }
         }
@@ -20,8 +20,8 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    sh '/opt/homebrew/bin/docker tag calculator rahulraman/calculator:latest'
-                    sh '/opt/homebrew/bin/docker push rahulraman/calculator:latest'
+                    sh '/usr/local/bin/docker tag calculator rahulraman/calculator:latest'
+                    sh '/usr/local/bin/docker push rahulraman/calculator:latest'
                 }
             }
         }
@@ -36,4 +36,5 @@ pipeline {
 
     }
 }
+
 
